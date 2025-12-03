@@ -2,31 +2,35 @@ def read_file(file_path):
     with open(file_path, 'r') as file:
         content = file.read()
     return content
+# from stackoverflow (so cool!) https://stackoverflow.com/questions/6422700/how-to-get-indices-of-a-sorted-array-in-python
 
 
 def main():
-    f = read_file("input.txt").removesuffix('\n')
-    ranges = f.split(",")
-    invalid_ids = []
-    for r in ranges:
-        SE = r.split("-")
-        n_start = int(SE[0])
-        n_end = int(SE[-1])
-        for number in range(n_start, n_end+1):
-            number_str = str(number)
-            length = len(number_str)
-            middle = len(number_str)//2
-            candidates = []
-            for i in range(1, middle+1):
-                candidates.append(number_str[:i]*(length//i))
-            for candidate in candidates:
-                if candidate == number_str:
-                    print("candidate: ", candidate, "real_number: ", number)
-                    invalid_ids.append(number)
-                    break
-                
-    print(sum(invalid_ids))
+    file_path = 'eg.txt'  # Replace with your file path
+    content = read_file(file_path)
+    banks = content.splitlines()
+    jolts = 0
+    for bank in banks:
+        queue = []
+        bats = [int(c) for c in bank]
+        indices =[i[0] for i in sorted(enumerate(bats), key=lambda x:x[1])]
+        for bat in bats:
+            print(f"queue: {queue}")
+            if len(queue) > 11:
+                ind = queue.index(min(queue))
+                print(f"full indices ascending: {indices}")
+                print(f"lowest index of min: {ind}")
+                queue.pop(ind)
+                indices.pop(ind)
+            queue.append(bat)
 
+        battery_array = [str(q) for q in queue]
+        #print(battery_array)
+        batt = "".join(battery_array)
+        #print(batt)
+        jolts += int("".join(battery_array))
+    print(jolts)
+        
 
 
 
