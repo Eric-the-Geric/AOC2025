@@ -4,7 +4,7 @@ def read_file(file_path):
     return content
 
 def main():
-    file_path = 'eg.txt'  # Replace with your file path
+    file_path = 'in.txt'  # Replace with your file path
     content = read_file(file_path)
     rows = content.splitlines()
     ingredient_id_range = []
@@ -18,18 +18,23 @@ def main():
             ingredient_id_range.append(r)
         else:
             ids.append(r)
-
     #print(ingredient_id_range)
     #print(ids)
     ranges = []
     count = 0
-    for rang in ingredient_id_range:
-        lo, hi = tuple(map(lambda x: int(x), rang.split('-')))
-        for i in range(lo, hi+1):
-            ranges.append(i)
-    for id in ids:
-        if int(id) in ranges:
-            count+=1
+    i = 0
+    while i < len(ids):
+        id = int(ids[i])
+        for rang in ingredient_id_range:
+            lo, hi = tuple(map(lambda x: int(x), rang.split('-')))
+            if hi >= id and id >= lo:
+                #print(f"found id {id} in range {rang}")
+                count += 1
+                break
+        i += 1
+
+
+
     print(count)
 
 
